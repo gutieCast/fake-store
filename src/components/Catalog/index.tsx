@@ -4,14 +4,21 @@ import { IProduct } from '../Card/interface';
 import { Card } from '../Card';
 import {
     Box,
-            Container,
+    Container,
         } from '@chakra-ui/react';
 import Masonry from 'react-masonry-css';
 
 class Catalog extends Component<{}, ICatalogState> {
     static api_url: string = 'https://fakestoreapi.com/products/';
-    state:ICatalogState = {
-        products: [],
+    static state: any;
+    // static state:ICatalogState = {
+    //     products: [],
+    // }
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            products: []
+        }
     }
 
     getProducts = async () => {
@@ -36,7 +43,7 @@ class Catalog extends Component<{}, ICatalogState> {
     }
 
     breakpointColumnsObj = {
-        default: 4,
+        default: 3,
         1100: 2,
         700: 2,
         500: 1
@@ -47,8 +54,9 @@ class Catalog extends Component<{}, ICatalogState> {
 
                 <Container
                     as={'main'}
-                    display={'f'}
+                    display={'b'}
                     mx={'auto'}
+                    my={['10px', '30px', '50px']}
                     maxW="100%"
                     px={'20px'}
 
@@ -59,15 +67,18 @@ class Catalog extends Component<{}, ICatalogState> {
                         columnClassName="catalog-grid-column"
                     >
                         {
-                            this.state.products.map(({ id, title, price, description, category, image, rating }: IProduct) => {
+                            this.state.products.map(({ id, title, price, description, category, image, rating }) => {
                                 return (
-                                    <Box key={id} m={['20px', '10px']}>
+                                    <Box 
+                                        key={id}
+                                    >
                                         <Card id={id} title={title} price={price} description={description} category={category} image={image} rating={rating} />
                                     </Box>
                                 )
                             })
                         }
                     </Masonry>
+                    {/* data={this.state.products} */}
                 </Container>
         )
     }

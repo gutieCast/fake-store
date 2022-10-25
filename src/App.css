@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
 .catalog-grid {
     display: -webkit-box; /* Not needed if autoprefixing */
     display: -ms-flexbox; /* Not needed if autoprefixing */
@@ -14,4 +16,6 @@
   /* Style your items */
   .catalog-grid-column > div { /* change div to reference your elements you put in <Masonry> */
     margin-bottom: 30px;
+    color: #4cbdbd;
+    width: 100%;
   }

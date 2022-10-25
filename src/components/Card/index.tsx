@@ -1,123 +1,165 @@
-import React from "react";
+import React, { FC } from "react";
 import { IProduct } from "./interface";
 import {
-            // Accordion,
-            // AccordionItem,
-            // AccordionButton,
-            // AccordionPanel,
-            Box,
-            Badge,
-            Image,
-            Text
-        } from '@chakra-ui/react';
+        Accordion,
+        AccordionItem,
+        AccordionButton,
+        AccordionPanel,
+        Badge,
+        Box,
+        Button,
+        Heading,
+        Image,
+        Text,
+        VStack
+    } from '@chakra-ui/react';
 import {
-        // AddIcon,
-        // MinusIcon,
+        AddIcon,
+        MinusIcon,
         StarIcon
     } from '@chakra-ui/icons'
 
-const Card = ({ id, title, price, description, category, image, rating }: IProduct ) => {
+const Card: FC <IProduct> = ({ id, title, price, description, category, image, rating }) => {
     return (
+        // Card
         <Box
             as={'article'}
-            border={'1px'}
-            borderColor={'gray.500'}
+            border={'3px'}
+            borderColor={'transparent'}
+            boxShadow={'0 3px 3px #4cbdbd'}
             className="card-product"
             display={'block'}
             m={'auto'}
             id={`${id}`}
             pos={'relative'}
             w={'340px'}
-            py={'20px'}
+            p={'30px'}
             _hover={{
-                background: 'gray.200',
+                border: '3px',
                 borderColor: 'teal',
                 transition: 'all .5s ease-in-out'
             }}
             role={'group'}
             >
-                <Badge opacity={['1', '1', '0']} borderRadius='full' px='2' colorScheme={'teal'} pos={'absolute'} top={'3%'} right={'5%'} _groupHover={{opacity: '1', transition: 'all .5 ease-in-out'}} >
+            <Box className="card-body">
+                {/* Category */}
+                <Badge
+                    opacity={['1', '1', '0']}
+                    borderRadius='full' px='2'
+                    colorScheme={'teal'}
+                    pos={'absolute'}
+                    top={'3%'}
+                    right={'5%'}
+                    _groupHover={{opacity: '1', transition: 'all .5 ease-in-out'}}
+                >
                     { category }
                 </Badge>
-            <Image
-                align={'center'}
-                boxSize={'borderBox'}
-                loading={'lazy'}
-                src={image}
-                alt={title}
-                mx="auto"
-                maxW={'200px'}
-                maxH={'250px'}
-            />
-            <Box
-                p='6' display={'flex'}
-                alignItems={'baseline'}
-            >
-                <Text
+                {/* Image */}
+                <Image
+                    align={'center'}
+                    boxSize={'borderBox'}
+                    loading={'lazy'}
+                    src={image}
+                    alt={title}
+                    mx="auto"
+                    maxW={'200px'}
+                    maxH={'250px'}
+                />
+                {/* Title */}
+                <Heading
+                    as={'h3'}
+                    className={'card-title'}
                     color='gray.500'
                     fontWeight='semibold'
                     letterSpacing='wide'
-                    fontSize='xs'
-                    align={'center'}
+                    fontSize='s'
+                    textAlign={'center'}
                     textTransform='uppercase'
-                    ml='2'
+                    mt={'2'}
+                    p={'6'}
                 >
                     {title}
-                </Text>
+                </Heading>
+                {/* Info */}
+                <VStack
+                    className="card-info"
+                    mb={'20px'}
+                >
+                    {/* Price */}
+                    <Box
+                        className="price-box"
+                        display={'flex'}
+                        alignItems={'center'}
+                        fontWeight={'extrabold'}
+                    >
+                        <Text fontSize={'3xl'} >
+                            {price}
+                        </Text>
+                        <Box as='span' color='gray.600' fontSize='large' ml={2}>
+                            USD
+                        </Box>
+                    </Box>
+                    {/* Rating */}
+                    <Box  className="rating-box" display='flex' alignItems='center' mt={'20px'}>
+                        {Array(5)
+                            .fill('')
+                            .map((_, i) => (
+                            <StarIcon
+                                key={i}
+                                color={i < Math.round(rating.rate)  ? 'teal.500' : 'gray.300'}
+                            />
+                            ))}
+                        <Box as='span' ml='2' color='gray.600' fontSize='sm'>
+                            {rating.rate} of
+                        </Box>    
+                        <Box as='span' ml='1' color='gray.600' fontSize='sm'>
+                            {rating.count} ratings
+                        </Box>
+                    </Box>
+                    {/* Description */}
+                    <Accordion
+                        className="description-accordion"
+                        my={'10px'}
+                        allowToggle
+                        allowMultiple
+                        borderColor={'transparent'}
+                    >
+                        <AccordionItem>
+                            {({ isExpanded }) => (
+                                <>                               
+                                    <AccordionButton _hover={{backgroundColor: 'transparent'}} _focus={{border: 'none', }}>
+                                        <Box flex='1' textAlign='center' border={'none'} >
+                                            {isExpanded ? (
+                                                "Hide description"
+                                                ) : (
+                                                "Show description"
+                                                )}
+                                        </Box>
+                                    </AccordionButton>
+                                    <AccordionPanel pb={4}>
+                                        {description}
+                                    </AccordionPanel>
+                                </>
+                            )}
+                        </AccordionItem>
+                    </Accordion>
+                </VStack>
             </Box>
             <Box
-                display={'flex'}
-                alignItems={'center'}
-                justifyContent={'space-around'}
-                mt='2'
+                as="footer"
+                className="card-footer"
+                w={'100%'}   
             >
-                <Box
-                    display={'flex'}
-                    alignItems={'center'}
+                {/* Add to Cart */}
+                <Button
+                    colorScheme={'teal'}
+                    w='100%'
+                    // onClick={}
                 >
-                    {price}
-                    <Box as='span' color='gray.600' fontSize='sm' ml={2}>
-                        USD
-                    </Box>
-                </Box>
-                <Box display='flex' alignItems='center'>
-                    {Array(5)
-                        .fill('')
-                        .map((_, i) => (
-                        <StarIcon
-                            key={i}
-                            color={i < rating.rate ? 'teal.500' : 'gray.300'}
-                        />
-                        ))}
-                    <Box as='span' ml='2' color='gray.600' fontSize='sm'>
-                        {rating.count} ratings
-                    </Box>
-                </Box>
-            </Box>
-            {/* <Accordion allowToggle allowMultiple>
-                <AccordionItem>
-                    {({ isExpanded }) => (
-                        <>
-                            <h2>
-                                <AccordionButton>
-                                    <Box flex='1' textAlign='left'>
-                                    More info
-                                    </Box>
-                                    {isExpanded ? (
-                                        <MinusIcon fontSize='12px' />
-                                        ) : (
-                                        <AddIcon fontSize='12px' />
-                                        )}
-                                </AccordionButton>
-                            </h2>
-                            <AccordionPanel pb={4}>
-                                {description}
-                            </AccordionPanel>
+                    Add to Cart
+                </Button>
 
-                        </>
-                    )}
-                </AccordionItem>
-            </Accordion> */}
+            </Box>
         </Box>
     )
 }
